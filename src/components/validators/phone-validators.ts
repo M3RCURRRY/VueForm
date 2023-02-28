@@ -3,13 +3,13 @@ const phoneValidators = [
     callback: (value: string) => {
       return value.length === 11;
     },
-    onError: "Invalid login length"
+    onError: "Введите 11 цифр"
   },
   {
     callback: (value: string) => {
       return /^\d+$/.test(value);
     },
-    onError: "Restricted characters in login"
+    onError: "Недопустимые символы"
   }
 ]
 

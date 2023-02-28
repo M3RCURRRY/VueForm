@@ -3,13 +3,13 @@ const loginValidators = [
     callback: (value: string) => {
       return value.length > 5;
     },
-    onError: "Invalid login length"
+    onError: "Введите более 5 символов"
   },
   {
     callback: (value: string) => {
       return /^[a-zA-Z0-9_]*$/.test(value);
     },
-    onError: "Restricted characters in login"
+    onError: "Недопустимые символы"
   }
 ]
 
