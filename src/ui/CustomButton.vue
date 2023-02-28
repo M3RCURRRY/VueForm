@@ -19,13 +19,24 @@ export default defineComponent({
     },
   },
   methods: {
-    clickHandler() {
+    clickHandler(e?: Event) {
       this.$emit("onClick");
     }
   }
 });
 </script>
 
-<style>
+<style lang="scss" scoped>
+  input {
+    padding: 10px 14px;
+    background-color: transparent;
+    border: 1px solid #2F2F34;
+    border-radius: 4px;
 
+    color: #2F2F34;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
 </style>

@@ -10,6 +10,7 @@
       :type="input.inputType"
       :placeholder="input.placeholder"
       @change="changeHandler"
+      :class="{ errorInput: hasError }"
     />
     <div v-if="hasError" class="errorDetails">
       {{ errorMessage }}
@@ -49,33 +50,26 @@ export default defineComponent({
       this.$emit("onChange", element.value);
       this.value = element.value;
 
-      console.log(element.value);
-
       if (!this.input.isLazyValidators && this.input.validators) {
         this.validate(element.value);
       }
     },
 
     validate(value: string) {
-
-      console.log("Validators", this.input.isLazyValidators);
-
       for (let validator of this.input.validators as Validator[]) {
         if (validator.callback(value)) continue;
         else {
-          console.log("Got error");
           this.hasError = true;
           this.errorMessage = validator.onError;
-          return;
+          return false;
         }
       }
-      console.log("No error");
       this.hasError = false;
+      return true;
     },
 
     executeValidators() {
-      console.log("Value: ", this.value);
-      this.validate(this.value);
+      return this.validate(this.value);
     }
   },
   data() {
@@ -95,12 +89,12 @@ export default defineComponent({
   flex-direction: column;
   align-items: flex-start;
 
-  margin: 5px auto;
+  margin: 8px auto;
 }
 
 label {
-  color: #171717;
-  margin-bottom: 3px;
+  color: #2F2F34;
+  margin-bottom: 8px;
 
   &:hover {
     cursor: pointer;
@@ -112,8 +106,9 @@ input {
   max-width: 300px;
 
   font-size: 1rem;
+  color: #2F2F34;
 
-  padding: 5px 8px;
+  padding: 8px 8px;
 
   border: 1px solid gray;
   border-radius: 3px;
@@ -127,7 +122,13 @@ input {
   }
 }
 
+.errorInput {
+  border: 1px solid #FF2168;
+}
+
 .errorDetails {
-  color: red;
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: #FF2168;
 }
 </style>
