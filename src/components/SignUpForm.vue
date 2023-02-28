@@ -1,27 +1,43 @@
 <template>
-  <form>
+  <form @submit="submitHandler">
     <CustomInput
-      :input="{ inputType: 'text', useTitle: true, title: 'Логин', validators: loginValidators, isLazyValidators: isLazy }"
+      :input="{
+        inputType: 'text',
+        useTitle: true,
+        title: 'Логин',
+        validators: loginValidators,
+        isLazyValidators: isLazy,
+      }"
       v-bind:value="login"
       @onChange="loginHandler"
       ref="loginRef"
-      
     />
     <CustomInput
-      :input="{ inputType: 'email', useTitle: true, title: 'Телефон' }"
+      :input="{
+        inputType: 'text',
+        useTitle: true,
+        title: 'Телефон',
+        validators: phoneValidators,
+        isLazyValidators: isLazy,
+      }"
       v-bind:value="phone"
       @onChange="phoneHandler"
       ref="phoneRef"
     />
     <CustomInput
-      :input="{ inputType: 'password', useTitle: true, title: 'Пароль' }"
+      :input="{
+        inputType: 'password',
+        useTitle: true,
+        title: 'Пароль',
+        validators: passwordValidators,
+        isLazyValidators: isLazy,
+      }"
       v-bind:value="password"
       @onChange="passwordHandler"
       ref="passwordRef"
     />
     <CustomButton
-      :button="{ type: 'button', value: 'Войти'}"
-      @onClick="forceValidate"
+      :button="{ type: 'submit', value: 'Войти' }"
     />
   </form>
 </template>
@@ -46,7 +62,11 @@ export default defineComponent({
       if (this.isLazy) {
         this.isLazy = false;
       }
-      (this.$refs["loginRef"] as any).executeValidators();
+      const r1 = (this.$refs["loginRef"] as any).executeValidators();
+      const r2 = (this.$refs["phoneRef"] as any).executeValidators();
+      const r3 = (this.$refs["passwordRef"] as any).executeValidators();
+
+      return r1 && r2 && r3;
     },
     loginHandler(value: string) {
       this.login = value;
@@ -57,6 +77,15 @@ export default defineComponent({
     passwordHandler(value: string) {
       this.password = value;
     },
+    submitHandler(e?: Event) {
+      if (e instanceof SubmitEvent) {
+        e.preventDefault();
+      }
+
+      if (this.forceValidate()) {
+        alert("Yahoo");
+      }
+    },
   },
   data() {
     return {
@@ -66,10 +95,15 @@ export default defineComponent({
       isLazy: true,
       loginValidators: loginValidators,
       phoneValidators: phoneValidators,
-      passwordValidators: passwordValidators
+      passwordValidators: passwordValidators,
     };
   },
 });
 </script>
 <style>
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 </style>
